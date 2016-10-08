@@ -1,0 +1,13 @@
+T2-RSA/rsa/dist/
+T2-RSA/rsa/build/
+T2-RSA/rsa/nbproject/*
+!T2-RSA/rsa/nbproject/project.properties
+!T2-RSA/rsa/nbproject/project.xml
+*.so
+*.log
+*.out
+*~
+*.swp
+*.DS_Store
+*.lock
+
