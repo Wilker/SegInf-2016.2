@@ -17,10 +17,11 @@
 /*
  * 
  */
-int findPrimes(int n, int *p1, int *p2);
+int findPrimes(int n, int *p1, int *p2, unsigned int* primes);
 int decrypt(int p1, int p2, int c, int e);
 int mod(int a, int b);
-int extendedEuclidean(int a, int b, int *u, int *v);
+unsigned int modinv(unsigned int u, unsigned int v);
+int load(int* primes);
 
 int main(int argc, char** argv) {
     //Chave pública
@@ -35,7 +36,9 @@ int main(int argc, char** argv) {
     int p1 = 0;
     //primo 2
     int p2 = 0;
-    if (findPrimes(n, &p1, &p2)) {
+    unsigned int* primes = (unsigned int *) malloc(78742 * sizeof (unsigned int)); // aloca a quantidade exata para todos os primos entre 1 e 1M
+
+    if (findPrimes(n, &p1, &p2, primes)) {
         int m = decrypt(p1, p2, c, e);
         printf(m);
     }
@@ -48,7 +51,8 @@ int main(int argc, char** argv) {
  * @param n
  * @return 
  */
-int findPrimes(int n, int *p1, int *p2) {
+int findPrimes(int n, int *p1, int *p2, unsigned int * primes) {
+    load(primes);
     return 1;
 }
 
@@ -58,23 +62,39 @@ int decrypt(int p1, int p2, int c, int e) {
     return 1;
 }
 
-int extendedEuclidean(int a, int b, int *u, int *v) {
-    int u1, u2, v1, v2;
-    u = v2 = 1;
-    v = u2 = 0;
-    while (mod(a, b) != 0) {
-        int q = a / b;
-        int r = mod(a, b);
-        a = b;
-        b = r;
-        u1 = u;
-        u = u2;
-        u2 = u1 - q*u;
-        v1 = v;
-        v = v2;
-        v2 = v1 - q*v;
+unsigned int modinv(unsigned int u, unsigned int v) {
+    unsigned int inv, u1, u3, v1, v3, t1, t3, q;
+    int iter;
+    /* Step X1. Initialise */
+    u1 = 1;
+    u3 = u;
+    v1 = 0;
+    v3 = v;
+    /* Remember odd/even iterations */
+    iter = 1;
+    /* Step X2. Loop while v3 != 0 */
+    while (v3 != 0) {
+        /* Step X3. Divide and "Subtract" */
+        q = u3 / v3;
+        t3 = u3 % v3;
+        t1 = u1 + q * v1;
+        /* Swap */
+        u1 = v1;
+        v1 = t1;
+        u3 = v3;
+        v3 = t3;
+        iter = -iter;
     }
-    return a;
+    /* Make sure u3 = gcd(u,v) == 1 */
+    if (u3 != 1)
+        return 0; /* Error: No inverse exists */
+    /* Ensure a positive result */
+    if (iter < 0)
+        inv = v - u1;
+    else
+        inv = u1;
+
+    return inv;
 }
 
 int mod(int a, int b) {
@@ -84,4 +104,29 @@ int mod(int a, int b) {
     if (ret < 0)
         ret += b;
     return ret;
+}
+
+int load(int* primes) {
+    char* caminho = "/home/wilker/Documentos/Git/Primos/primos.txt";
+    FILE *arq;
+    arq = fopen(caminho, "r");
+    if (!arq) {
+        printf("Erro na abertura do arquivo, tente novamente:");
+        system("pause");
+        exit(1);
+    }
+    int tmp = 0;
+    fscanf(arq, "%d", &tmp);
+    primes[0] = tmp;
+    int counter = 1;
+
+    while (!feof(arq)) {
+        printf("Lido %d\n", tmp);
+        fscanf(arq, "%d", &tmp);
+        *primes[counter] = tmp;
+        counter++;
+        printf("Posição do array de int %d valor %d\n", counter, primes[counter]);
+    }
+    fclose(arq);
+    return 0;
 }
