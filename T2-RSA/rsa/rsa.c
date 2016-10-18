@@ -18,8 +18,10 @@
  * 
  */
 int findPrimes(int n, int *p1, int *p2);
+int decrypt(int p1, int p2, int c, int e);
+int mod(int a, int b);
+int extendedEuclidean(int a, int b, int *u, int *v);
 
-void decrypt(int p1,int p2,int c);
 int main(int argc, char** argv) {
     //Chave pública
     int n = 0;
@@ -34,13 +36,9 @@ int main(int argc, char** argv) {
     //primo 2
     int p2 = 0;
     if (findPrimes(n, &p1, &p2)) {
-
-        decrypt(p1, p2, c) {
-
-
-        }
+        int m = decrypt(p1, p2, c, e);
+        printf(m);
     }
-
 
     return (EXIT_SUCCESS);
 }
@@ -54,4 +52,36 @@ int findPrimes(int n, int *p1, int *p2) {
     return 1;
 }
 
+int decrypt(int p1, int p2, int c, int e) {
 
+
+    return 1;
+}
+
+int extendedEuclidean(int a, int b, int *u, int *v) {
+    int u1, u2, v1, v2;
+    u = v2 = 1;
+    v = u2 = 0;
+    while (mod(a, b) != 0) {
+        int q = a / b;
+        int r = mod(a, b);
+        a = b;
+        b = r;
+        u1 = u;
+        u = u2;
+        u2 = u1 - q*u;
+        v1 = v;
+        v = v2;
+        v2 = v1 - q*v;
+    }
+    return a;
+}
+
+int mod(int a, int b) {
+    if (b < 0)
+        return mod(a, -b);
+    int ret = a % b;
+    if (ret < 0)
+        ret += b;
+    return ret;
+}
