@@ -20,8 +20,8 @@
 int findPrimes(int n, int *p1, int *p2);
 int decrypt(int *p1, int *p2, int c, int e, int n);
 int mod(int a, int b);
-int modular_pow(int base, int exponent, int modulus);
-unsigned int modinv(unsigned int u, unsigned int v);
+long long modular_pow(long long base, long long exponent, int modulus);
+int modinv( int u,  int v);
 
 int main(int argc, char** argv) {
     //Chave pública
@@ -33,9 +33,9 @@ int main(int argc, char** argv) {
 
     scanf("%d %d %d", &n, &e, &c);
     //primo 1
-    int* p1 = 0;
+    int *p1 = 0;
     //primo 2
-    int* p2 = 0;
+    int *p2 = 0;
 
 
     if (findPrimes(n, &p1, &p2)) {
@@ -61,7 +61,7 @@ int findPrimes(int n, int *p1, int *p2) {
             if (v[i] * v[j] == n) {
                 *p1 = v[i];
                 *p2 = v[j];
-                printf("Primos encontrados %d e %d\n", &p1, &p2);
+                printf("Primos encontrados %d e %d\n", *p1, *p2);
                 return 1;
             }
         }
@@ -70,13 +70,13 @@ int findPrimes(int n, int *p1, int *p2) {
 }
 
 int decrypt(int *p1, int *p2, int c, int e, int n) {
-    unsigned int d = modinv(*p1 - 1, *p2 - 1);
-    int m = modular_pow(c, e, n);
+    int d = modinv(e,(*p1 - 1)*(*p2 - 1));
+   unsigned int m = modular_pow(c, d, n);
     return m;
 }
 
-unsigned int modinv(unsigned int u, unsigned int v) {
-    unsigned int inv, u1, u3, v1, v3, t1, t3, q;
+ int modinv(int u,  int v) {
+     int inv, u1, u3, v1, v3, t1, t3, q;
     int iter;
     /* Step X1. Initialise */
     u1 = 1;
@@ -119,9 +119,11 @@ int mod(int a, int b) {
     return ret;
 }
 
-int modular_pow(int base, int exponent, int modulus) {
-    int result = 1;
-    while (exponent > 0) {
+long long modular_pow(long long base, long long exponent, int modulus)
+{
+    long long result = 1;
+    while (exponent > 0)
+    {
         if (exponent % 2 == 1)
             result = (result * base) % modulus;
         exponent = exponent >> 1;
