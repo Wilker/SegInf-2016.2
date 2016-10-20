@@ -1,21 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   rsa.c
- * Author: wilker
- *
- * Created on 8 de Outubro de 2016, 16:55
- */
-
 #include <stdio.h>
 #include <stdlib.h>
-
-//#define max_primes 21474 /*size of integers array*/
-
 
 int findPrimes(int n, int *p1, int *p2, int primes[]);
 int decrypt(int *p1, int *p2, int c, int e, int n);
@@ -23,7 +7,7 @@ int mod(int a, int b);
 long long modular_pow(long long base, long long exponent, int modulus);
 int modinv(int u, int v);
 int* load_primes(void);
-int max_primes = 131072; //potência de 2
+int max_primes = 131072; //Um valor inicial igual a 2^17
 
 int main(int argc, char** argv) {
     //Chave pública
@@ -37,21 +21,27 @@ int main(int argc, char** argv) {
     //primo 2
     int *p2 = 0;
 
-
-
+    //lendo a entrada
     scanf("%d %d %d", &n, &e, &c);
 
-
     int find;
+
+    // inicialmente é utilizado um tamanho pequeno de números primos.
+    // a cada loop, caso não encontre, a quantidade de números primos dobra. 
+    // enqt houver memória, ou atingir o valor máximo de um int de 4 bytes.
     do {
+        //carrega os números primos em um vetor
         int* primes = load_primes();
+        //busca para ver se encontra dois primos multiplicados que de o valor de N
         find = findPrimes(n, &p1, &p2, primes);
+        //se encontrou decripta a mensagem
         if (find) {
             int m = decrypt(&p1, &p2, c, e, n);
             printf("%d", m);
         }
         free(primes);
-        if (max_primes < 2047999999) {
+        //proteção para não estourar o tamanho do int
+        if (max_primes > 1073741823) {
             max_primes = 2147483647;
         } else {
             max_primes = max_primes * 2;
@@ -59,24 +49,18 @@ int main(int argc, char** argv) {
 
     } while (!find);
 
-
     return (0);
 }
 
-/**
- * Retorna 1 caso encontre p1*p1=n  e 0 caso contrário
- * @param n
- * @return 
- */
 int findPrimes(int n, int *p1, int *p2, int primes[]) {
     int i;
     for (i = 0; i <= max_primes; i++) {
         int j;
         for (j = 0; j <= max_primes; j++) {
             if (primes[i] * primes[j] == n) {
+                //Primos encontrados!
                 *p1 = primes[i];
                 *p2 = primes[j];
-                printf("Primos encontrados %d e %d\n", *p1, *p2);
                 return 1;
             }
         }
@@ -93,35 +77,29 @@ int decrypt(int *p1, int *p2, int c, int e, int n) {
 int modinv(int u, int v) {
     int inv, u1, u3, v1, v3, t1, t3, q;
     int iter;
-    /* Step X1. Initialise */
     u1 = 1;
     u3 = u;
     v1 = 0;
     v3 = v;
-    /* Remember odd/even iterations */
     iter = 1;
-    /* Step X2. Loop while v3 != 0 */
     while (v3 != 0) {
-        /* Step X3. Divide and "Subtract" */
         q = u3 / v3;
         t3 = u3 % v3;
         t1 = u1 + q * v1;
-        /* Swap */
+
         u1 = v1;
         v1 = t1;
         u3 = v3;
         v3 = t3;
         iter = -iter;
     }
-    /* Make sure u3 = gcd(u,v) == 1 */
     if (u3 != 1)
-        return 0; /* Error: No inverse exists */
-    /* Ensure a positive result */
+        return 0; //Não há inverso!
+    //Garantir que o resultado é positido
     if (iter < 0)
         inv = v - u1;
     else
         inv = u1;
-
     return inv;
 }
 
@@ -161,7 +139,7 @@ int* load_primes(void) {
         numbers[i] = i + 2;
     }
 
-    /*sieve the non-primes*/
+    //Preenche números compostos com -1
     for (i = 0; i < max_primes; i++) {
         if (numbers[i] != -1) {
             for (j = 2 * numbers[i] - 2; j < max_primes; j += numbers[i])
@@ -169,7 +147,7 @@ int* load_primes(void) {
         }
     }
 
-    /*transfer the primes to their own array*/
+    //Os que não são primos passam para o vetor de primos
     j = 0;
     for (i = 0; i < max_primes && j < primes; i++)
         if (numbers[i] != -1)
