@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define LIMIT 21474836 /*size of integers array*/
+//#define max_primes 21474 /*size of integers array*/
 
 
 int findPrimes(int n, int *p1, int *p2, int primes[]);
@@ -22,6 +22,8 @@ int decrypt(int *p1, int *p2, int c, int e, int n);
 int mod(int a, int b);
 long long modular_pow(long long base, long long exponent, int modulus);
 int modinv(int u, int v);
+int* load_primes(void);
+int max_primes = 100000;
 
 int main(int argc, char** argv) {
     //Chave pública
@@ -35,41 +37,25 @@ int main(int argc, char** argv) {
     //primo 2
     int *p2 = 0;
 
-    int i, j;
-    int *primes;
-    primes = (int*) malloc(LIMIT * sizeof (int));
-    int *numbers;
-    numbers = (int*) malloc(LIMIT * sizeof (int));
 
-
-    for (i = 0; i < LIMIT; i++) {
-        numbers[i] = i + 2;
-    }
-
-    /*sieve the non-primes*/
-    for (i = 0; i < LIMIT; i++) {
-        if (numbers[i] != -1) {
-            for (j = 2 * numbers[i] - 2; j < LIMIT; j += numbers[i])
-                numbers[j] = -1;
-        }
-    }
-
-    /*transfer the primes to their own array*/
-    j = 0;
-    for (i = 0; i < LIMIT && j < primes; i++)
-        if (numbers[i] != -1)
-            primes[j++] = numbers[i];
 
     scanf("%d %d %d", &n, &e, &c);
 
-   free(numbers);
 
-    if (findPrimes(n, &p1, &p2, primes)) {
-        int m = decrypt(&p1, &p2, c, e, n);
-        printf("%d", m);
-    }
-    free(primes);
-    return (EXIT_SUCCESS);
+    int find;
+    do {
+        int* primes = load_primes();
+        find = findPrimes(n, &p1, &p2, primes);
+        if (find) {
+            int m = decrypt(&p1, &p2, c, e, n);
+            printf("%d", m);
+        }
+        free(primes);
+        max_primes = max_primes * 2;
+    } while (!find);
+
+
+    return (0);
 }
 
 /**
@@ -79,9 +65,9 @@ int main(int argc, char** argv) {
  */
 int findPrimes(int n, int *p1, int *p2, int primes[]) {
     int i;
-    for (i = 0; i <= LIMIT; i++) {
+    for (i = 0; i <= max_primes; i++) {
         int j;
-        for (j = 0; j <= LIMIT; j++) {
+        for (j = 0; j <= max_primes; j++) {
             if (primes[i] * primes[j] == n) {
                 *p1 = primes[i];
                 *p2 = primes[j];
@@ -152,4 +138,33 @@ long long modular_pow(long long base, long long exponent, int modulus) {
         base = (base * base) % modulus;
     }
     return result;
+}
+
+int* load_primes(void) {
+    int i, j;
+    int *primes;
+    primes = (int*) malloc(max_primes * sizeof (int));
+    int *numbers;
+    numbers = (int*) malloc(max_primes * sizeof (int));
+
+
+    for (i = 0; i < max_primes; i++) {
+        numbers[i] = i + 2;
+    }
+
+    /*sieve the non-primes*/
+    for (i = 0; i < max_primes; i++) {
+        if (numbers[i] != -1) {
+            for (j = 2 * numbers[i] - 2; j < max_primes; j += numbers[i])
+                numbers[j] = -1;
+        }
+    }
+
+    /*transfer the primes to their own array*/
+    j = 0;
+    for (i = 0; i < max_primes && j < primes; i++)
+        if (numbers[i] != -1)
+            primes[j++] = numbers[i];
+    free(numbers);
+    return primes;
 }
