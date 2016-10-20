@@ -23,7 +23,7 @@ int mod(int a, int b);
 long long modular_pow(long long base, long long exponent, int modulus);
 int modinv(int u, int v);
 int* load_primes(void);
-int max_primes = 100000;
+int max_primes = 131072; //potência de 2
 
 int main(int argc, char** argv) {
     //Chave pública
@@ -51,7 +51,12 @@ int main(int argc, char** argv) {
             printf("%d", m);
         }
         free(primes);
-        max_primes = max_primes * 2;
+        if (max_primes < 2047999999) {
+            max_primes = 2147483647;
+        } else {
+            max_primes = max_primes * 2;
+        }
+
     } while (!find);
 
 
@@ -144,6 +149,10 @@ int* load_primes(void) {
     int i, j;
     int *primes;
     primes = (int*) malloc(max_primes * sizeof (int));
+    if (!primes) {
+        printf("Memória Insuficiente, encerrando o programa");
+        exit(1);
+    }
     int *numbers;
     numbers = (int*) malloc(max_primes * sizeof (int));
 
