@@ -2,8 +2,9 @@
 #include <stdlib.h>
 
 void printVetor(int* vetor, int n);
-char* polarizar(int bits[], int bases[], int lenght, char base1,
-        char base2);
+char* polarizar(int bits[], int bases[], int lenght, char base1, char base2);
+char* basesBinToChar(int* basesBinarias,int n, char base1,char base2);
+int* comparaBases(char* basesAlice, char* basesBob);
 
 int main(int argc, char** argv) {
 
@@ -66,13 +67,32 @@ int main(int argc, char** argv) {
         scanf(" %c",&basesBob[i]);
     }
 
-    /* impressão para verificar se foi lida corretamente a base do bob  */
+    /* impressão para verificar se foi lida corretamente a base do Bob  */
     for (i = 0; i < n; i++) {
         printf("%c ", basesBob[i]);
     }
     printf("\n");
+
+    /* vetor que guardará as bases convertidas para caracter da Alice */
+    char* basesChar = basesBinToChar(basesBinarias,n,base1,base2);
+
+    /* impressão para verificar se as bases foram convertidas corretamente  */
+    for (i = 0; i < n; i++) {
+        printf("%c ", basesChar[i]);
+    }
+    printf("\n");
+
     return 0;
 }
+
+
+
+
+
+
+
+
+
 
 void printPolarizacao(char base1, char base2, int bits[],
         int basesBinarias[], int lenght) {
@@ -148,4 +168,21 @@ void printVetor(int* vetor, int n) {
         printf(" %d", vetor[i]);
     }
     printf("\n");
+}
+
+char* basesBinToChar(int* basesBinarias,int n, char base1,char base2){
+    char* basesChar = (char*)malloc(n * sizeof(char));
+    int i;
+    for (i = 0; i < n; i++) {
+        if (basesBinarias[i]==0)
+            basesChar[i]=base1;
+        else
+            basesChar[i]=base2;
+    }
+    return basesChar;
+}
+
+
+int* comparaBases(char* basesAlice, char* basesBob){
+
 }
