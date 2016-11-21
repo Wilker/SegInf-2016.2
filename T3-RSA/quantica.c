@@ -32,10 +32,13 @@ int main(int argc, char** argv) {
     int i = 0;
     for (i = 0; i < n; i++) {
         /* gerando valores aleatórios entre zero e um */
-        int aleatorio =rand() % 2;
-        bits[i] = aleatorio;
-        aleatorio = rand() %2;
-        basesBinarias[i] = aleatorio;
+        bits[i] = rand() %2;
+    }
+
+    /*  Alice escolhe n bases aleatoriamente entre 0 e 1 */
+    for (i = 0; i < n; i++) {
+        /* gerando valores aleatórios entre zero e um */
+        basesBinarias[i] = rand() %2;
     }
 
     printf("Os bits aleatórios escolhidos foram\n");
@@ -53,7 +56,21 @@ int main(int argc, char** argv) {
     for (i = 0; i < n; i++) {
         printf("%c ", bases[i]);
     }
+    printf("\n");
 
+    /* vetor que guardará as bases escolhidas por bob */
+    char* basesBob = (char*) malloc(n* sizeof(char));
+
+    /* leitura das bases dos n bits do bob */
+    for (i = 0; i < n; i++) {
+        scanf(" %c",&basesBob[i]);
+    }
+
+    /* impressão para verificar se foi lida corretamente a base do bob  */
+    for (i = 0; i < n; i++) {
+        printf("%c ", basesBob[i]);
+    }
+    printf("\n");
     return 0;
 }
 
@@ -77,7 +94,7 @@ char* polarizar(int bits[], int bases[], int lenght, char base1,
 
     int i;
     for (i = 0; i < lenght; ++i) {
-        /* Se a base é 0 então a base escolhida é a base */
+        /* Se a base é 0 então a base escolhida é a base1*/
         if (bases[i] == 0) {
             /* Se a base for '+' então verifica o valor do bit correspondente e faz a polarização */
             if (base1 == '+')
