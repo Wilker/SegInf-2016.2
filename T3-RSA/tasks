@@ -4,7 +4,7 @@ ok! -	3 - Alice gera uma sequencia de n bits aleatórios
 ok! -	4 - Alice escolhe uma sequencia de n bases aleatórias
 ok! -	5 - Alice polariza os fótons com as bases selecionadas
 ok! - 	6 - Alice recebe a sequência de bases do bob
-7 - Alice compara a sequência de bases do bob com a sua
-8 - Alice converte as bases iguaos para binário
+ok! - 	7 - Alice compara a sequência de bases do bob com a sua
+ok! - 	8 - Alice converte as bases iguais para binário
 9 - Alice converte o número binário para decimal e imprime na tela
 

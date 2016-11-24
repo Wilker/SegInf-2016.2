@@ -4,7 +4,7 @@
 void printVetor(int* vetor, int n);
 char* polarizar(int bits[], int bases[], int lenght, char base1, char base2);
 char* basesBinToChar(int* basesBinarias,int n, char base1,char base2);
-int* comparaBases(char* basesAlice, char* basesBob);
+int* comparaBases(char* basesAlice, char* basesBob, int lenght, char base1, char base2, int* qtdIguais);
 
 int main(int argc, char** argv) {
 
@@ -68,19 +68,31 @@ int main(int argc, char** argv) {
     }
 
     /* impressão para verificar se foi lida corretamente a base do Bob  */
+    printf("impressão para verificar se foi lida corretamente a base do Bob \n");
     for (i = 0; i < n; i++) {
         printf("%c ", basesBob[i]);
     }
     printf("\n");
 
     /* vetor que guardará as bases convertidas para caracter da Alice */
-    char* basesChar = basesBinToChar(basesBinarias,n,base1,base2);
+    char* basesCharAlice = basesBinToChar(basesBinarias,n,base1,base2);
 
     /* impressão para verificar se as bases foram convertidas corretamente  */
+    printf("impressão para verificar se as bases foram convertidas corretamente\n");
     for (i = 0; i < n; i++) {
-        printf("%c ", basesChar[i]);
+        printf("%c ", basesCharAlice[i]);
     }
     printf("\n");
+
+
+    int qtdBasesIguais=0;
+    int* basesIguais = comparaBases(basesCharAlice,basesBob,n,base1,base2, &qtdBasesIguais);
+
+     printf("impressão para verificar as bases iguais, qtd %d\n",qtdBasesIguais);
+    for (i = 0; i < qtdBasesIguais; i++) {
+        printf("%d ", basesIguais[i]);
+    }
+
 
     return 0;
 }
@@ -93,7 +105,7 @@ int main(int argc, char** argv) {
 
 
 
-
+/* Não utilizado */
 void printPolarizacao(char base1, char base2, int bits[],
         int basesBinarias[], int lenght) {
 
@@ -183,6 +195,26 @@ char* basesBinToChar(int* basesBinarias,int n, char base1,char base2){
 }
 
 
-int* comparaBases(char* basesAlice, char* basesBob){
+int* comparaBases(char* basesAlice, char* basesBob, int lenght, char base1, char base2, int* qtdIguais){
+    int i, cont;
+    /* Passagem inicial para contar a quantidade de bases iguais */
+    for (i = 0; i < lenght; i++)
+        if (basesAlice[i]==basesBob[i])
+           cont++;
 
+
+    *qtdIguais = cont;
+    /* Vetor para guardar as bases iguais*/
+    int* basesIguais = malloc(cont * (sizeof(int)));
+
+    cont = 0;
+    for (i = 0; i < lenght; i++)
+        if (basesAlice[i]==basesBob[i]){
+           if (basesAlice[i]==base1)
+               basesIguais[cont]=0;
+           else
+               basesIguais[cont]=1;
+    cont++;
+    }
+    return basesIguais;
 }
