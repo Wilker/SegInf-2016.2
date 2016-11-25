@@ -5,6 +5,7 @@ void printVetor(int* vetor, int n);
 char* polarizar(int bits[], int bases[], int lenght, char base1, char base2);
 char* basesBinToChar(int* basesBinarias,int n, char base1,char base2);
 int* comparaBases(char* basesAlice, char* basesBob, int lenght, char base1, char base2, int* qtdIguais);
+long long binaryToDecimal(int* bin, int lenght);
 
 int main(int argc, char** argv) {
 
@@ -85,16 +86,20 @@ int main(int argc, char** argv) {
     printf("\n");
 
 
-    int qtdBasesIguais=0;
+    int qtdBasesIguais = 0;
     int* basesIguais = comparaBases(basesCharAlice,basesBob,n,base1,base2, &qtdBasesIguais);
 
      printf("impressão para verificar as bases iguais, qtd %d\n",qtdBasesIguais);
     for (i = 0; i < qtdBasesIguais; i++) {
         printf("%d ", basesIguais[i]);
     }
+    printf("\n");
 
 
-    return 0;
+    // long long decimal = binaryToDecimal(basesIguais, qtdBasesIguais);
+    // return 0;
+
+    //printf("%lld\n",decimal);
 }
 
 
@@ -196,7 +201,7 @@ char* basesBinToChar(int* basesBinarias,int n, char base1,char base2){
 
 
 int* comparaBases(char* basesAlice, char* basesBob, int lenght, char base1, char base2, int* qtdIguais){
-    int i, cont;
+    int i, cont = 0;
     /* Passagem inicial para contar a quantidade de bases iguais */
     for (i = 0; i < lenght; i++)
         if (basesAlice[i]==basesBob[i])
@@ -218,3 +223,15 @@ int* comparaBases(char* basesAlice, char* basesBob, int lenght, char base1, char
     }
     return basesIguais;
 }
+
+/*long long binaryToDecimal(int* bin, int lenght){
+    int i;
+    long long decimal =  0;
+    for (i = 0; i < lenght; i++) {
+        if (bin[i] == 1)
+            decimal = decimal * 2 + 1;
+        else if (bin[i] == 0) decimal *= 2;
+    }
+    return decimal;
+}
+*/
