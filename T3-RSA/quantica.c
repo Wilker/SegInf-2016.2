@@ -96,10 +96,10 @@ int main(int argc, char** argv) {
     printf("\n");
 
 
-    // long long decimal = binaryToDecimal(basesIguais, qtdBasesIguais);
-    // return 0;
+    long long decimal = binaryToDecimal(basesIguais, qtdBasesIguais);
+    printf("%lld\n",decimal);
 
-    //printf("%lld\n",decimal);
+    return 0;
 }
 
 
@@ -224,7 +224,7 @@ int* comparaBases(char* basesAlice, char* basesBob, int lenght, char base1, char
     return basesIguais;
 }
 
-/*long long binaryToDecimal(int* bin, int lenght){
+long long binaryToDecimal(int* bin, int lenght){
     int i;
     long long decimal =  0;
     for (i = 0; i < lenght; i++) {
@@ -234,4 +234,3 @@ int* comparaBases(char* basesAlice, char* basesBob, int lenght, char base1, char
     }
     return decimal;
 }
-*/

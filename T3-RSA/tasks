@@ -6,5 +6,5 @@ ok! -	5 - Alice polariza os fótons com as bases selecionadas
 ok! - 	6 - Alice recebe a sequência de bases do bob
 ok! - 	7 - Alice compara a sequência de bases do bob com a sua
 ok! - 	8 - Alice converte as bases iguais para binário
-9 - Alice converte o número binário para decimal e imprime na tela
+ok! - 	9 - Alice converte o número binário para decimal e imprime na tela
 
