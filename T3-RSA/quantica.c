@@ -22,7 +22,6 @@ int main(int argc, char** argv) {
     /* Leitura das duas bases utilizadas nesse processo */
     char base1, base2;
     scanf(" %c %c", &base1, &base2);
-    printf("%c %c\n", base1, base2);
 
     /* vetor que guardará até 100 bits */
     int* bits = (int*) malloc(n * sizeof (int));
@@ -43,18 +42,18 @@ int main(int argc, char** argv) {
         basesBinarias[i] = rand() %2;
     }
 
-    printf("Os bits aleatórios escolhidos foram\n");
+    /*printf("Os bits aleatórios escolhidos foram\n");
     printVetor(bits, n);
     printf("A bases aleatórias escolhidas foram\n");
-    printVetor(basesBinarias, n);
+    printVetor(basesBinarias, n);*/
 
 
     /*  Conversão dos valores das bases de binário para char conforme
     a tabela */
     char* bases = polarizar(bits, basesBinarias, n, base1, base2);
 
-
-    printf("Polarização\n");
+    /* Impressão da Polarização da Alice */
+    //printf("Polarização\n");
     for (i = 0; i < n; i++) {
         printf("%c ", bases[i]);
     }
@@ -69,7 +68,7 @@ int main(int argc, char** argv) {
     }
 
     /* impressão para verificar se foi lida corretamente a base do Bob  */
-    printf("impressão para verificar se foi lida corretamente a base do Bob \n");
+    /* printf("impressão para verificar se foi lida corretamente a base do Bob \n");
     for (i = 0; i < n; i++) {
         printf("%c ", basesBob[i]);
     }
@@ -79,21 +78,21 @@ int main(int argc, char** argv) {
     char* basesCharAlice = basesBinToChar(basesBinarias,n,base1,base2);
 
     /* impressão para verificar se as bases foram convertidas corretamente  */
-    printf("impressão para verificar se as bases foram convertidas corretamente\n");
+    /* printf("impressão para verificar se as bases foram convertidas corretamente\n");
     for (i = 0; i < n; i++) {
         printf("%c ", basesCharAlice[i]);
     }
-    printf("\n");
+    printf("\n"); */
 
 
     int qtdBasesIguais = 0;
     int* basesIguais = comparaBases(basesCharAlice,basesBob,n,base1,base2, &qtdBasesIguais);
 
-     printf("impressão para verificar as bases iguais, qtd %d\n",qtdBasesIguais);
-    for (i = 0; i < qtdBasesIguais; i++) {
+
+    /* for (i = 0; i < qtdBasesIguais; i++) {
         printf("%d ", basesIguais[i]);
     }
-    printf("\n");
+    printf("\n"); */
 
 
     long long decimal = binaryToDecimal(basesIguais, qtdBasesIguais);
@@ -107,23 +106,7 @@ int main(int argc, char** argv) {
 
 
 
-
-
-
-/* Não utilizado */
-void printPolarizacao(char base1, char base2, int bits[],
-        int basesBinarias[], int lenght) {
-
-    int i;
-    for (i = 0; i < lenght; ++i) {
-        if (bits[i] == 0) {
-            if (basesBinarias[i] == 0) {
-
-            }
-        }
-    }
-}
-
+/* método utilizado para polarizar os fótons seguindo a tablela */
 char* polarizar(int bits[], int bases[], int lenght, char base1,
         char base2) {
 
@@ -187,6 +170,8 @@ void printVetor(int* vetor, int n) {
     printf("\n");
 }
 
+
+/* função responsável para converter as bases binárias recebidas em int para um vetor de char com as bases escolhidas */
 char* basesBinToChar(int* basesBinarias,int n, char base1,char base2){
     char* basesChar = (char*)malloc(n * sizeof(char));
     int i;
