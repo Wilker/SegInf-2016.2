@@ -6,7 +6,12 @@ void printVetor(int* vetor, int n);
 int* hamming(int* bits, int n, int k);
 int* read(int n);
 int equals(int* v1, int* v2, int k);
-int main(int argc, char** argv) {
+float colisao(int** hashes, int linhas, int colunas);
+
+
+int main(int argc, char** argv)
+
+ {
     /* */
     /* Leitura do número de bits (k) de paridade e do número de valores de hash a serem calculados (d) */
     int k, d;
@@ -36,7 +41,12 @@ int main(int argc, char** argv) {
         printVetor(hashes[i], k);
         printf("\n");
     }
-    return 0;
+
+
+	// float collided = colisao(hashes,d, k);
+	// printf("O número de colisoes foi %.2f  \n",collided);
+
+	return 0;
 }
 
 /* Lê a k vezes a quantidade de n bits e retona um vetor com os bits lidos
@@ -104,6 +114,24 @@ int equals(int* v1, int* v2, int k) {
 	}
 	return 1;
 }
+
+float colisao(int** hashes, int linhas, int colunas) {
+
+int colisao =0;
+int i =0;
+int j =0;
+float percent=0;
+for(i = 0; i < linhas-1 ; i++) {
+      for(j = i+1; i < linhas ; j++) {
+            if(equals(hashes[i],hashes[j],colunas))
+                  colisao++;
+      }
+}
+percent = (float)linhas/(float)colisao;
+printf("%.2f\n",percent);
+return percent;
+}
+
 
 void printVetor(int* vetor, int n) {
     int i;
