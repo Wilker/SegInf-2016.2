@@ -5,7 +5,7 @@
 void printVetor(int* vetor, int n);
 int* hamming(int* bits, int n, int k);
 int* read(int n);
-
+int equals(int* v1, int* v2, int k);
 int main(int argc, char** argv) {
     /* */
     /* Leitura do número de bits (k) de paridade e do número de valores de hash a serem calculados (d) */
@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-/* Lê a k vezes a quantidade de n bits e retona um vetor com os bits lidos 
+/* Lê a k vezes a quantidade de n bits e retona um vetor com os bits lidos
  1 0 0 1 1 0 1 0 0 0 0 */
 int* read(int n) {
     int i;
@@ -94,6 +94,15 @@ int* hamming(int* bits, int n, int k) {
         hash[i] = soma % 2;
     }
     return hash;
+}
+
+
+int equals(int* v1, int* v2, int k) {
+	int i;
+	for(i = 0; i < k; i++) {
+		if(v1[i] != v2[i]) return 0;
+	}
+	return 1;
 }
 
 void printVetor(int* vetor, int n) {
